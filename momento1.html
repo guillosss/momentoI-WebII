@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momento I</title>
+</head>
+
+<body>
+    <h1>Momento I</h1>
+    <p id="mensaje" style="color:red"></p>
+    <form>
+        <label for="idinmueble">Id Inmueble</label>
+        <input type="number" id="idinmueble" name="idinmueble">
+        <span id="midinmueble" style="color: red"></span>
+        <br>
+        <label for="direccion">Direccion</label>
+        <input type="text" id="direccion" name="direccion">
+        <span id="mdireccion" style="color: red"></span>
+        <br>
+        <label for="telefono">Telefono</label>
+        <input type="text" id="telefono" name="telefono">
+        <span id="mtelefono" style="color: red"></span>
+        <br>
+        <label for="precio">precio</label>
+        <input type="number" id="precio" name="precio">
+        <span id="mprecio" style="color: red"></span>
+        <br>
+        <label for="estado">Estado</label>
+        <input type="text" id="estado" name="estado">
+        <span id="mestado" style="color: red"></span>
+        <br>
+        <br>
+        <button type="button" id="btnenviar" name="btnenviar">Enviar</button>
+        <button type="button" id="btnbuscarinmueble" name="btnbuscarinmueble">Buscar Inmueble</button>
+        <button type="button" id="btnlistarinmueble" name="btnlistarinmueble">Listar Inmueble</button>
+    </form>
+    
+    <div id="mensaje1">
+
+    </div>
+    <script>  
+
+    let btnenviar=document.getElementById('btnenviar')
+    let btnbuscarinmueble=document.getElementById('btnbuscarinmueble')
+    let btnlistarinmueble=document.getElementById('btnlistarinmueble')
+
+        document.getElementById('idinmueble').addEventListener('focus',()=>{
+            document.getElementById('midinmueble').innerHTML="Solo se aceptan numeros"
+        })
+        
+        document.getElementById('direccion').addEventListener('focus',()=>{
+            document.getElementById('mdireccion').innerHTML="la direccion es obligatoria"
+        })
+
+        document.getElementById('precio').addEventListener('focus',()=>{
+            document.getElementById('mprecio').innerHTML=" El precio debe estar entre 100 millones y 500 millones"
+        })
+        let usuarios = [
+            {idinmueble:01, direccion:"calle 84 #45-11", telefono:"5163308",precio:200000000,estado:"Disponible"},
+            {idinmueble:02, direccion:"calle 84 #45-12", telefono:"2333545",precio:300000000,estado:"Disponible"},
+            {idinmueble:03, direccion:"calle 84 #45-13", telefono:"5163309",precio:200000000,estado:"Disponible"},
+            {idinmueble:04, direccion:"calle 84 #45-14", telefono:"5163310",precio:400000000,estado:"No Disponible"},
+            {idinmueble:05, direccion:"calle 84 #45-15", telefono:"5163311",precio:500000000,estado:"Disponible"},
+            {idinmueble:06, direccion:"calle 84 #45-16", telefono:"5163312",precio:600000000,estado:"No Disponible"},
+            {idinmueble:07, direccion:"calle 84 #45-17", telefono:"5163313",precio:700000000,estado:"No Disponible"},
+            {idinmueble:08, direccion:"calle 84 #45-18", telefono:"5163313",precio:700000000,estado:"Disponible"},
+            {idinmueble:09, direccion:"calle 84 #45-19", telefono:"5163314",precio:800000000,estado:"No Disponible"},
+            {idinmueble:10, direccion:"calle 84 #45-20", telefono:"5163314",precio:900000000,estado:"No Disponible"}
+        ]
+
+     function enviar(){
+        let promesa=new Promise((resolve,reject)=>{
+        setTimeout(()=>{  
+            if (parseFloat(document.getElementById('idinmueble').value)== "" || parseFloat(document.getElementById('direccion').value)== "" || parseFloat(document.getElementById('telefono').value)== "" || parseFloat(document.getElementById('precio').value)== ""|| parseFloat(document.getElementById('estado').value)== ""){
+                alert("Recuerda que todos los campos deben estar diligenciados")
+            }},1000)
+    })
+    return promesa
+    }
+    enviar()
+    .then((respuesta)=>{
+    console.log(respuesta)
+    .catch((error)=>{
+                document.getElementById('mensaje1').innerHTML = error;
+    })
+})
+
+
+
+
+        function fpusuarios(arrobj){
+            return new Promise((resolve, reject)=>{
+                document.getElementById('mensaje').innerHTML = " ";
+                setTimeout(()=>{
+                    let mstate = true;
+                    if (mstate){
+                        resolve(arrobj)
+                    }
+                    else{
+                        reject("No hay usuarios para mostrar")
+                    }
+                },4000)
+            })
+        }
+  
+        fpusuarios(usuarios)
+            .then((data)=>{
+                let mihtml = `<table border='1'>
+                                <th>Id Inmueble</th>
+                                <th>direccion</th>
+                                <th>Telefono</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                              `
+           
+                for (reg of data){
+                    mihtml += `<tr>
+                                    <td>${reg.idinmueble}</td>
+                                    <td>${reg.direccion}</td>
+                                    <td>${reg.telefono}</td>
+                                    <td>${reg.precio}</td>
+                                    <td>${reg.estado}</td>
+                               </tr>`
+                }
+                mihtml += `</table>`;
+                document.getElementById('mensaje1').innerHTML = mihtml;
+
+            })
+            .catch((error)=>{
+                document.getElementById('mensaje1').innerHTML = error;
+            })
+
+    </script>
+
+</body>
+
+</html>
